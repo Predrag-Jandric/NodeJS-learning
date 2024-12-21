@@ -1,5 +1,9 @@
 const fs = require("fs");
-const http = require('http')
+const http = require("http");
+const url = require("url");
+
+// /////////////////////////////
+// FOR FILES
 
 // blocking way
 // const textIn = fs.readFileSync("./txt/input.txt", "utf-8");
@@ -12,7 +16,7 @@ const http = require('http')
 // non blocking way
 // fs.readFile("./txt/start.txt", "utf-8", (err, data1) => {
 //     if(err) return console.log("error");
-    
+
 //   fs.readFile(`./txt/${data1}.txt`, "utf-8", (err, data2) => {
 //     console.log(data2);
 //     fs.readFile(`./txt/append.txt`, "utf-8", (err, data3) => {
@@ -30,3 +34,26 @@ const http = require('http')
 //   });
 // });
 // console.log("will read file");
+
+// /////////////////////////////
+// FOR SERVER
+const server = http.createServer((req, res) => {
+  const pathName = req.url;
+
+  if (pathName === "/overview" || pathName === "/") {
+    res.end("overview page");
+  } else if (pathName === "/product") {
+    res.end("product page");
+  } else {
+    res.writeHead(404, {
+        "content-type": "text/html",
+        "my-own-header": 'hello custom header',
+    })
+    res.end("<h1>page not found</h1>")
+  }
+});
+
+// number for localhost and port
+server.listen(8000, "127.0.0.1", () => {
+  console.log("server started");
+});
