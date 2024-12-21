@@ -37,6 +37,9 @@ const url = require("url");
 
 // /////////////////////////////
 // FOR SERVER
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
+const dataObj = JSON.parse(data);
+
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
@@ -44,12 +47,15 @@ const server = http.createServer((req, res) => {
     res.end("overview page");
   } else if (pathName === "/product") {
     res.end("product page");
+  } else if (pathName === "/api") {
+    res.writeHead(200, { "content-type": "application/json" });
+    res.end(data);
   } else {
     res.writeHead(404, {
-        "content-type": "text/html",
-        "my-own-header": 'hello custom header',
-    })
-    res.end("<h1>page not found</h1>")
+      "content-type": "text/html",
+      "my-own-header": "hello custom header",
+    });
+    res.end("<h1>page not found</h1>");
   }
 });
 
